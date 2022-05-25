@@ -4,10 +4,16 @@ import (
 	"io/ioutil"
 	"log"
 	"encoding/json"
+	"strconv"
 )
 
 type Item struct{
 	X string
+	Position int
+}
+
+func (i *Item) Pretty() string {
+	return strconv.Itoa(i.Position) + ". " + i.X
 }
 
 func ReadItems(filename string) ([]Item, error) {
@@ -21,6 +27,9 @@ func ReadItems(filename string) ([]Item, error) {
 	if err != nil {
 		log.Fatal(err)
 		return []Item{}, err
+	}
+	for i,_ := range items{
+		items[i].Position = i+1
 	}
 	return items, err
 }
