@@ -11,6 +11,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	displayAll bool
+	displayDone bool
+)
+
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -20,12 +25,14 @@ var listCmd = &cobra.Command{
 
 func runList(cmd *cobra.Command, args []string) {
 	items := []schema.Item{}
-	items, err := schema.ReadItems("/home/rameez/.tododata.json")
+	items, err := schema.ReadItems(datafile)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for _, x := range items {
-		fmt.Println(x.Pretty())
+		if displayAll || displayDone == x.Done {
+			fmt.Println(x.Pretty())
+		} 
 	}
 }
 
@@ -41,4 +48,7 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	listCmd.Flags().BoolVar(&displayAll, "all", false, "Display the the tasks.")
+	listCmd.Flags().BoolVar(&displayDone, "done", false, "Display completed tasks.")
+
 }

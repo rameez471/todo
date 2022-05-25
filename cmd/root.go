@@ -6,11 +6,12 @@ package cmd
 
 import (
 	"os"
-
+	"log"
 	"github.com/spf13/cobra"
+	"github.com/mitchellh/go-homedir"
 )
 
-
+var datafile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -39,7 +40,13 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
+	homedir, err := homedir.Dir()
+	if err != nil{
+		log.Fatal(err)
+	}
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//  StringVar(p *string, name string, value string, usage string)
+	rootCmd.PersistentFlags().StringVar(&datafile, "datafile", homedir+string(os.PathSeparator)+".tododata.json", "location of storage. Default is (/home/user/.tododata.json)")
 }
 
 

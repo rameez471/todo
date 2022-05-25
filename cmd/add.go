@@ -20,7 +20,7 @@ var addCmd = &cobra.Command{
 
 func runAdd(cmd *cobra.Command, args []string) {
 	items := [] schema.Item{}
-	items, err := schema.ReadItems("/home/rameez/.tododata.json")
+	items, err := schema.ReadItems(datafile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,7 +28,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 		item := schema.Item{X: x}
 		items = append(items, item)
 	}
-	err = schema.WriteItems("/home/rameez/.tododata.json", items)
+	err = schema.WriteItems(datafile, items)
 	if err != nil{
 		log.Fatal(err)
 	}

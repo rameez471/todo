@@ -10,10 +10,18 @@ import (
 type Item struct{
 	X string
 	Position int
+	Done bool
 }
 
 func (i *Item) Pretty() string {
-	return strconv.Itoa(i.Position) + ". " + i.X
+	return i.MarkDone()+" "+strconv.Itoa(i.Position) + ". " + i.X
+}
+
+func (i *Item) MarkDone() string {
+	if i.Done {
+		return "[X]"
+	}
+	return "[ ]"
 }
 
 func ReadItems(filename string) ([]Item, error) {
