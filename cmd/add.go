@@ -5,8 +5,8 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"log"
 	"fmt"
-
 	"todo/schema"
 	"github.com/spf13/cobra"
 )
@@ -22,18 +22,17 @@ func runAdd(cmd *cobra.Command, args []string) {
 	items := [] schema.Item{}
 	items, err := schema.ReadItems("/home/rameez/.tododata.json")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 	for _, x := range args {
 		item := schema.Item{X: x}
 		items = append(items, item)
 	}
-	fmt.Println(items)
 	err = schema.WriteItems("/home/rameez/.tododata.json", items)
 	if err != nil{
-		fmt.Println(err)
+		log.Fatal(err)
 	}
-
+	fmt.Println("Task added to the list!!")
 }
 
 func init() {
