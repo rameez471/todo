@@ -5,52 +5,54 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"log"
 	"fmt"
+	"log"
 	"todo/schema"
 	"strconv"
 	"github.com/spf13/cobra"
 )
 
-// doneCmd represents the done command
-var doneCmd = &cobra.Command{
-	Use:   "done",
-	Short: "Mark the completed tasks as done.",
-	Run: runDone,
+// deleteCmd represents the delete command
+var deleteCmd = &cobra.Command{
+	Use:   "delete",
+	Short: "Permanently delete a task from the list.",
+	Run: runDelete,
 }
 
-func runDone(cmd *cobra.Command, args []string) {
+func runDelete(cmd *cobra.Command, args []string) {
 	items, err := schema.ReadItems(datafile)
-	if err != nil{
+	if err !=  nil{
 		log.Fatal(err)
 	}
 	index, err := strconv.Atoi(args[0])
 	if err != nil {
-		log.Fatal("Please enter position number of Task to be marked as Done")
+		log.Fatal(err)
 	}
-	for i,_ := range items {
+	for i, _ := range items {
 		if items[i].Position == index {
-			items[i].Done = true
+			items = schema.DeleteItem(items, i)
+			break
 		}
 	}
 	err = schema.WriteItems(datafile, items)
-	if err != nil{
+
+	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Tasks marked as Done!!")
+	fmt.Println("Tak(s) deleted!")
 }
 
+
 func init() {
-	rootCmd.AddCommand(doneCmd)
+	rootCmd.AddCommand(deleteCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// doneCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// deleteCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// doneCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
+	// deleteCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

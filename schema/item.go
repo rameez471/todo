@@ -32,6 +32,13 @@ func (i *Item) PrettyPriority() string{
 	}
 }
 
+func DeleteItem(items []Item, i int) []Item {
+	items[i] = items[len(items)-1]
+	items[len(items)-1] = Item{}
+	items = items[:len(items)-1]
+	return items
+}
+
 func (i *Item) MarkDone() string {
 	if i.Done {
 		return "[X]"
