@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var priority int
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
@@ -26,6 +27,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 	}
 	for _, x := range args {
 		item := schema.Item{X: x}
+		item.SetPriority(priority)
 		items = append(items, item)
 	}
 	err = schema.WriteItems(datafile, items)
@@ -47,4 +49,6 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// IntVarP(p *int, name, shorthand string, value int, usage string)
+	addCmd.Flags().IntVarP(&priority, "priority", "p", 2, "Add priority to a Task\n 1: High\n 2: Medium\n 3: Low\n")
 }

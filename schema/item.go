@@ -5,16 +5,31 @@ import (
 	"log"
 	"encoding/json"
 	"strconv"
+	"sort"
 )
 
 type Item struct{
 	X string
 	Position int
 	Done bool
+	Priority int
 }
 
 func (i *Item) Pretty() string {
-	return i.MarkDone()+" "+strconv.Itoa(i.Position) + ". " + i.X
+	return i.MarkDone()+" "+strconv.Itoa(i.Position) + ". " + i.X + " ("+i.PrettyPriority()+") "
+}
+
+func (i *Item) PrettyPriority() string{
+	switch i.Priority {
+	case 1:
+		return "High"
+	case 2:
+		return "Medium"
+	case 3:
+		return "Low"
+	default:
+		return ""
+	}
 }
 
 func (i *Item) MarkDone() string {
@@ -22,6 +37,17 @@ func (i *Item) MarkDone() string {
 		return "[X]"
 	}
 	return "[ ]"
+}
+
+func (i *Item) SetPriority(pri int) {
+	switch pri {
+	case 1:
+		i.Priority = 1
+	case 3:
+		i.Priority = 3
+	default:
+		i.Priority = 2
+	}
 }
 
 func ReadItems(filename string) ([]Item, error) {
@@ -39,6 +65,12 @@ func ReadItems(filename string) ([]Item, error) {
 	for i,_ := range items{
 		items[i].Position = i+1
 	}
+	sort.Slice(items[:], func(i, j int) bool {
+		if items[i].Priority == items[j].Priority {
+			return items[i].Position < items[j].Position
+		}
+		return items[i].Priority < items[j].Priority
+	})
 	return items, err
 }
 

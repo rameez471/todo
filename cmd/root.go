@@ -46,7 +46,7 @@ func init() {
 	}
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	//  StringVar(p *string, name string, value string, usage string)
-	rootCmd.PersistentFlags().StringVar(&datafile, "datafile", homedir+string(os.PathSeparator)+".tododata.json", "location of storage. Default is (/home/user/.tododata.json)")
+	rootCmd.PersistentFlags().StringVar(&datafile, "datafile", homedir+string(os.PathSeparator)+".tododata.json", "location of storage")
 }
 
 
